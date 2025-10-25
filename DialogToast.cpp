@@ -39,7 +39,7 @@ EasyToast::EasyToast(QWidget *parent)
 
     connect(&m_TMHide,&QTimer::timeout,this,[=]{
         m_opacity -= 0.1 ;
-        setWindowOpacity(m_opacity) ;
+        //setWindowOpacity(m_opacity) ;
         if(m_opacity <= 0.0)
         {
             m_TMHide.stop() ;
