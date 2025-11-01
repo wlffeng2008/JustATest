@@ -77,13 +77,11 @@ void MainWindow::paintEvent(QPaintEvent *event)
     painter.setPen(QPen(QBrush(0x6329B6),nPW));
     painter.setBrush(0x6329B6);
     painter.drawArc(rect,0,360*16);
-    painter.drawEllipse(rect.center()+QPoint(1,1),nRadius-nPW*2,nRadius-nPW*2);
+    painter.drawEllipse(rect.center()+QPoint(1,1),nRadius-6,nRadius-6);
 
     QImage checkImg(20,20,QImage::Format_ARGB32) ;
     checkImg.fill(Qt::transparent);
     {
-
-        //painter.setRenderHint(QPainter::Antialiasing,false);
         QRect rect=QRect(0,0,20,20).adjusted(1,1,-1,-1) ;
 
         QPainter  painter(&checkImg) ;

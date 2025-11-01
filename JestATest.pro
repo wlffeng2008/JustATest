@@ -20,6 +20,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     DialogToast.cpp \
+    ringloop.cpp
 
 HEADERS += \
     DialogToast.h \
@@ -27,7 +28,8 @@ HEADERS += \
     custumradiobutton.h \
     ffmpegplayer.h \
     gencomport.h \
-    mainwindow.h
+    mainwindow.h \
+    ringloop.h
 
 FORMS += \
     DialogToast.ui \

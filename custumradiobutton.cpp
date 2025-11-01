@@ -26,7 +26,7 @@ void CustumRadioButton::paintEvent(QPaintEvent *event)
         painter.setPen(QPen(QBrush(0x6329B6),nPW));
         painter.drawArc(rect,0,360*16);
         painter.setBrush(0x6329B6);
-        painter.drawEllipse(rect.center()+QPoint(1,1),nRadius-nPW*2,nRadius-nPW*2);
+        painter.drawEllipse(rect.center()+QPoint(1,1),nRadius-5,nRadius-5);
     }
     else
     {
