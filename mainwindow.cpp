@@ -5,6 +5,8 @@
 
 #include <QPainter>
 #include <QWindow>
+#include <QApplication>
+#include <QStyle>
 
 // #include <QtWaylandClient/qwaylandwindow.h>
 // #include <QtWaylandClient/qwaylandxdgshell.h>
@@ -46,14 +48,30 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->checkBoxTop,&QCheckBox::clicked,this,[=](bool checked){
         QWindow *pWin = windowHandle() ;
+        Qt::WindowFlags flags = windowFlags() ;
         if(checked)
-            pWin->setFlags(windowFlags() | Qt::WindowStaysOnTopHint) ;
+            flags |= Qt::WindowStaysOnTopHint;
         else
-            pWin->setFlags(windowFlags() & ~Qt::WindowStaysOnTopHint) ;
+            flags &= ~Qt::WindowStaysOnTopHint;
 
-        setWindowFlag(Qt::WindowStaysOnTopHint, checked);
+        pWin->setFlags(flags) ;
+
+        //setWindowFlags(flags);
         show() ;
     });
+
+    m_player = new FFMpegPlayer(this);
+    connect(m_player,&FFMpegPlayer::onImage,this,[=](const QImage&image){
+        m_img = image ;
+        ui->labelVideo->update();
+    });
+    m_player->setUrl("rtmp://liteavapp.qcloud.com/live/liteavdemoplayerstreamid");
+    //m_player->setUrl("rtsp://218.204.223.237:554/live/1/0547424F573B085C/gsfp90ef4k0a6iap.sdp");
+    //m_player->setUrl("rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov");
+    //m_player->setUrl("rtmp://ns8.indexforce.com/home/mystream");
+    //m_player->setUrl("rtmp://mobliestream.c3tv.com:554/live/goodtv.sdp");
+    //m_player->setUrl("rtmp://media3.scctv.net/live/scctv_800");
+    ui->labelVideo->installEventFilter(this);
 }
 
 MainWindow::~MainWindow()
@@ -61,11 +79,26 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+bool MainWindow::eventFilter(QObject *watched,QEvent *event)
+{
+    if(watched == ui->labelVideo && event->type() == QEvent::Paint)
+    {
+        QPainter painter(ui->labelVideo);
+        if(!m_img.isNull())
+        {
+            painter.drawImage(ui->labelVideo->rect(),m_img);
+            return true ;
+        }
+    }
+    return QMainWindow::eventFilter(watched,event);
+}
+
+
 void MainWindow::paintEvent(QPaintEvent *event)
 {
     QPainter  painter(this) ;
     painter.setRenderHint(QPainter::Antialiasing);
-    QRect rect(200,200,101,101) ;
+    QRect rect(20,160,101,101) ;
 
     painter.setPen(Qt::red);
     painter.drawArc(rect,0,360*16);
@@ -73,7 +106,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
 
     int nPW = 2 ;
     int nRadius = 18 ;
-    rect=QRect(250,200,nRadius*2,nRadius*2);
+    rect=QRect(150,160,nRadius*2,nRadius*2);
     painter.setPen(QPen(QBrush(0x6329B6),nPW));
     painter.setBrush(0x6329B6);
     painter.drawArc(rect,0,360*16);
@@ -106,9 +139,10 @@ void MainWindow::paintEvent(QPaintEvent *event)
     }
 
     painter.setRenderHint(QPainter::SmoothPixmapTransform);
-    painter.drawImage(QRect(320,200,64,64),checkImg);
-    painter.drawImage(QRect(400,200,32,32),checkImg);
-    painter.drawImage(QRect(400,240,20,20),checkImg);
-    painter.drawImage(QRect(400,280,16,16),checkImg);
-    painter.drawImage(QRect(400,300,12,12),checkImg);
+    painter.drawImage(QRect(250,160,64,64),checkImg);
+    painter.drawImage(QRect(320,160,32,32),checkImg);
+    painter.drawImage(QRect(360,160,20,20),checkImg);
+    painter.drawImage(QRect(400,160,16,16),checkImg);
+    painter.drawImage(QRect(420,160,12,12),checkImg);
+    painter.drawImage(QPoint(420,160),QApplication::style()->standardIcon(QStyle::SP_MessageBoxInformation).pixmap(128,128).toImage());
 }

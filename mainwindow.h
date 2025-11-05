@@ -7,6 +7,7 @@
 #include <QMqttClient>
 
 #include "gencomport.h"
+#include "ffmpegplayer.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -24,10 +25,14 @@ public:
 
 protected:
     void paintEvent(QPaintEvent *event) override;
+    bool eventFilter(QObject *watched,QEvent *event) override;
 private:
     Ui::MainWindow *ui;
 
     QMqttClient m_mqtt;
     GenComport  m_port;
+
+    QImage m_img ;
+    FFMpegPlayer *m_player=nullptr;
 };
 #endif // MAINWINDOW_H

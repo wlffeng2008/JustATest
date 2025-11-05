@@ -1,6 +1,8 @@
 #include "ringloop.h"
 
 #include <QPainter>
+#include <QPaintEvent>
+#include <QMouseEvent>
 
 RingLoop::RingLoop(QWidget *parent):QLabel(parent)
 {
@@ -26,14 +28,14 @@ void RingLoop::paintEvent(QPaintEvent *event)
     rect.setWidth(rect.height());
 
     int nPW = 2 ;
-    int nRadius = rect.height()/2 ;
-    {
-        painter.setPen(QPen(QBrush(Qt::black),nPW));
-        painter.drawArc(rect,m_curAngle*16,360*12);
-    }
+
+    painter.setPen(QPen(QBrush(Qt::black),nPW));
+    painter.drawArc(rect,m_curAngle*16,360*12);
+    event->accept();
 }
 
 void RingLoop::mousePressEvent(QMouseEvent *event)
 {
     m_pause = !m_pause ;
+    event->accept();
 }
