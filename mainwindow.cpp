@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "DialogToast.h"
+#include "EasyToast.h"
 
 #include <QPainter>
 #include <QWindow>
@@ -20,24 +20,20 @@ MainWindow::MainWindow(QWidget *parent)
         toast()->active("Hello!",2);// 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
     });
 
-    QString strOS = "unkown!" ;
+    QString strOS = "Unkown!" ;
 #ifdef Q_OS_WIN
-    // Windows 平台处理
     strOS = "Windows";
 #elif defined(Q_OS_LINUX)  // 正确写法：检查 Q_OS_LINUX 是否定义
-    // Linux 平台处理
     strOS = "Linux";
 #elif defined(Q_OS_MACOS)
-    // macOS 平台处理
     strOS = "MacOS";
-#else
-    // 其他平台处理
 #endif
 
     ui->labelOS->setText(strOS);
 
     m_mqtt.setUsername("");
     m_mqtt.setPassword("");
+    m_mqtt.setClientId("qwerty12345678");
     m_mqtt.setHostname("test.mosquitto.org");
     m_mqtt.setPort(1883);
     m_mqtt.connectToHost();
@@ -72,6 +68,17 @@ MainWindow::MainWindow(QWidget *parent)
     //m_player->setUrl("rtmp://mobliestream.c3tv.com:554/live/goodtv.sdp");
     //m_player->setUrl("rtmp://media3.scctv.net/live/scctv_800");
     ui->labelVideo->installEventFilter(this);
+
+    m_http = new HttpHandler(this) ;
+    connect(m_http,&HttpHandler::onHttpReturn,this,[=](const QString&text,int code){
+        qDebug() << text ;
+        ui->plainTextEdit2->setPlainText(text);
+    });
+
+    connect(ui->pushButtonHttp,&QPushButton::clicked,this,[=]{
+        QString text = ui->plainTextEdit1->toPlainText().trimmed();
+        m_http->get(text);
+    });
 }
 
 MainWindow::~MainWindow()
@@ -139,10 +146,11 @@ void MainWindow::paintEvent(QPaintEvent *event)
     }
 
     painter.setRenderHint(QPainter::SmoothPixmapTransform);
-    painter.drawImage(QRect(250,160,64,64),checkImg);
-    painter.drawImage(QRect(320,160,32,32),checkImg);
-    painter.drawImage(QRect(360,160,20,20),checkImg);
-    painter.drawImage(QRect(400,160,16,16),checkImg);
-    painter.drawImage(QRect(420,160,12,12),checkImg);
+    painter.drawImage(QRect(250,150,64,64),checkImg);
+    painter.drawImage(QRect(600,150,128,128),checkImg);
+    painter.drawImage(QRect(320,150,32,32),checkImg);
+    painter.drawImage(QRect(360,150,20,20),checkImg);
+    painter.drawImage(QRect(400,150,16,16),checkImg);
+    painter.drawImage(QRect(420,150,12,12),checkImg);
     painter.drawImage(QPoint(420,160),QApplication::style()->standardIcon(QStyle::SP_MessageBoxInformation).pixmap(128,128).toImage());
 }

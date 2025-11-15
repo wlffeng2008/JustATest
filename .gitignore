@@ -2,6 +2,7 @@
 *.o
 *.out
 a.out
+*.obj
 
 # 忽略日志文件
 *.log
@@ -10,6 +11,9 @@ a.out
 *.tmp
 temp/
 biuld/
+bin/
+/bin
+/biuld
 # 忽略IDE配置文件（如Qt Creator、VS Code）
 .idea/
 .vscode/
