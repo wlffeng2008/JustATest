@@ -10,10 +10,10 @@ a.out
 # 忽略临时文件
 *.tmp
 temp/
-biuld/
+build/
 bin/
 /bin
-/biuld
+/build
 # 忽略IDE配置文件（如Qt Creator、VS Code）
 .idea/
 .vscode/
