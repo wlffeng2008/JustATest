@@ -14,22 +14,21 @@ RingLoop::RingLoop(QWidget *parent):QLabel(parent)
             update();
         }
     });
-    m_TMDraw.start(20);
+    m_TMDraw.start(30);
 }
-
 
 void RingLoop::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this) ;
     painter.setRenderHint(QPainter::Antialiasing);
-    QRect rect = this->rect().adjusted(2,2,-2,-2);//QRect(250,200,nRadius*2,nRadius*2);
+    QRect rect = this->rect().adjusted(m_lineWidth,m_lineWidth,-m_lineWidth,-m_lineWidth);//QRect(250,200,nRadius*2,nRadius*2);
     if(rect.height()%2)
         rect.setHeight(rect.height()+1);
     rect.setWidth(rect.height());
 
-    int nPW = 2 ;
+    int nPW = m_lineWidth;
 
-    painter.setPen(QPen(QBrush(Qt::black),nPW));
+    painter.setPen(QPen(QBrush(m_lineColor),nPW));
     painter.drawArc(rect,m_curAngle*16,360*12);
     event->accept();
 }

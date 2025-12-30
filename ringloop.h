@@ -10,6 +10,9 @@ class RingLoop : public QLabel
 public:
     RingLoop(QWidget *parent=nullptr);
 
+    int m_lineWidth = 2;
+    QColor m_lineColor=Qt::black;
+
 protected:
     void paintEvent(QPaintEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;

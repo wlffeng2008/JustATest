@@ -71,18 +71,27 @@ MainWindow::MainWindow(QWidget *parent)
 
     m_http = new HttpHandler(this) ;
     connect(m_http,&HttpHandler::onHttpReturn,this,[=](const QString&text,int code){
-        qDebug() << text ;
+        //qDebug() << text ;
         ui->plainTextEdit2->setPlainText(text);
     });
 
+    //ui->plainTextEdit1->setPlainText("https://www.163.com");
     connect(ui->pushButtonHttp,&QPushButton::clicked,this,[=]{
         QString text = ui->plainTextEdit1->toPlainText().trimmed();
         m_http->get(text);
     });
+
+    ui->label1->m_lineColor=Qt::red ;
+    ui->label2->m_lineColor=Qt::gray ;
+    ui->label3->m_lineColor=QColor(0,0,200,200) ;
+
+    ui->label2->m_lineWidth=1;
+    ui->label3->m_lineWidth=4;
 }
 
 MainWindow::~MainWindow()
 {
+    m_player->close();
     delete ui;
 }
 
@@ -153,4 +162,32 @@ void MainWindow::paintEvent(QPaintEvent *event)
     painter.drawImage(QRect(400,150,16,16),checkImg);
     painter.drawImage(QRect(420,150,12,12),checkImg);
     painter.drawImage(QPoint(420,160),QApplication::style()->standardIcon(QStyle::SP_MessageBoxInformation).pixmap(128,128).toImage());
+
+    {
+        QPainter p(this);
+        p.setRenderHint(QPainter::Antialiasing);
+
+        // 渐变圆环
+        QRect r(50,50,200,200);
+        QRadialGradient grad(r.center(),120);
+        grad.setColorAt(0, Qt::green);
+        grad.setColorAt(0.9, Qt::blue);
+        grad.setColorAt(1, Qt::red);
+        QPen pen;
+        pen.setBrush(grad);
+        pen.setWidth(20);
+        p.setPen(pen);
+        p.setBrush(Qt::NoBrush);
+        p.drawEllipse(r);
+
+        // 渐变文字
+        QLinearGradient textGrad(0,0,300,0);
+        textGrad.setColorAt(0, Qt::cyan);
+        textGrad.setColorAt(1, Qt::magenta);
+        pen.setBrush(textGrad);
+        pen.setWidth(1);
+        p.setPen(pen);
+        p.setFont(QFont("Arial",24, QFont::Bold));
+        p.drawText(50,300,"Gradient Text!");
+    }
 }

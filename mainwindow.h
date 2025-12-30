@@ -51,8 +51,8 @@ private slots:
         } else {
             int code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
             QString text = reply->readAll();
-            qDebug() << "状态码：" << code;
-            qDebug() << "响应：" << text;
+            //qDebug() << "状态码：" << code;
+            //qDebug() << "响应：" << text;
             onHttpReturn(text,code);
         }
         reply->deleteLater();
