@@ -12,14 +12,16 @@ CONFIG += console
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-INCLUDEPATH += /home/levi/Desktop/Work/vcpkg/installed/x64-linux/include
-LIBS += /home/levi/Desktop/Work/vcpkg/installed/x64-linux/lib/libavdevice.a    # 依赖 avformat、avcodec
-LIBS += /home/levi/Desktop/Work/vcpkg/installed/x64-linux/lib/libavfilter.a    # 依赖 avformat、avcodec 等
-LIBS += /home/levi/Desktop/Work/vcpkg/installed/x64-linux/lib/libavformat.a    # 依赖 avcodec、avutil
-LIBS += /home/levi/Desktop/Work/vcpkg/installed/x64-linux/lib/libavcodec.a     # 依赖 avutil
-LIBS += /home/levi/Desktop/Work/vcpkg/installed/x64-linux/lib/libswscale.a     # 依赖 avutil
-LIBS += /home/levi/Desktop/Work/vcpkg/installed/x64-linux/lib/libswresample.a  # 依赖 avutil
-LIBS += /home/levi/Desktop/Work/vcpkg/installed/x64-linux/lib/libavutil.a      # 最基础库，无依赖
+LibRoot = /home/levi/Desktop/Work/vcpkg/installed/x64-linux/
+
+INCLUDEPATH +=  LibRoot + /include
+LIBS += LibRoot + /lib/libavdevice.a    # 依赖 avformat、avcodec
+LIBS += LibRoot + /lib/libavfilter.a    # 依赖 avformat、avcodec 等
+LIBS += LibRoot + /lib/libavformat.a    # 依赖 avcodec、avutil
+LIBS += LibRoot + /lib/libavcodec.a     # 依赖 avutil
+LIBS += LibRoot + /lib/libswscale.a     # 依赖 avutil
+LIBS += LibRoot + /lib/libswresample.a  # 依赖 avutil
+LIBS += LibRoot + /lib/libavutil.a      # 最基础库，无依赖
 
 #LIBS += -lz -lpthread -lm -ldl
 

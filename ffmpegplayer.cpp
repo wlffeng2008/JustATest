@@ -26,7 +26,7 @@ FFMpegPlayer::FFMpegPlayer(QObject *parent)
 {
     avdevice_register_all();
     avformat_network_init();
-
+    qDebug() << avcodec_version() << av_version_info() << avformat_version() << avutil_version();
     start();
 }
 
