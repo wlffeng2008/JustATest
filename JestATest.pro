@@ -14,14 +14,14 @@ CONFIG += console
 
 LibRoot = /home/levi/Desktop/Work/vcpkg/installed/x64-linux/
 
-INCLUDEPATH +=  LibRoot + /include
-LIBS += LibRoot + /lib/libavdevice.a    # 依赖 avformat、avcodec
-LIBS += LibRoot + /lib/libavfilter.a    # 依赖 avformat、avcodec 等
-LIBS += LibRoot + /lib/libavformat.a    # 依赖 avcodec、avutil
-LIBS += LibRoot + /lib/libavcodec.a     # 依赖 avutil
-LIBS += LibRoot + /lib/libswscale.a     # 依赖 avutil
-LIBS += LibRoot + /lib/libswresample.a  # 依赖 avutil
-LIBS += LibRoot + /lib/libavutil.a      # 最基础库，无依赖
+INCLUDEPATH +=  $$LibRoot/include
+LIBS += $$LibRoot/lib/libavdevice.a    # 依赖 avformat、avcodec
+LIBS += $$LibRoot/lib/libavfilter.a    # 依赖 avformat、avcodec 等
+LIBS += $$LibRoot/lib/libavformat.a    # 依赖 avcodec、avutil
+LIBS += $$LibRoot/lib/libavcodec.a     # 依赖 avutil
+LIBS += $$LibRoot/lib/libswscale.a     # 依赖 avutil
+LIBS += $$LibRoot/lib/libswresample.a  # 依赖 avutil
+LIBS += $$LibRoot/lib/libavutil.a      # 最基础库，无依赖
 
 #LIBS += -lz -lpthread -lm -ldl
 

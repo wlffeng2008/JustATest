@@ -33,18 +33,36 @@ MainWindow::MainWindow(QWidget *parent)
 
     m_mqtt.setUsername("");
     m_mqtt.setPassword("");
-    m_mqtt.setClientId("qwerty12345678");
+    //m_mqtt.setClientId("qwerty12345678");
     m_mqtt.setHostname("test.mosquitto.org");
     m_mqtt.setPort(1883);
-    m_mqtt.connectToHost();
     connect(&m_mqtt,&QMqttClient::connected,this,[=]{
-        qDebug() << "MqttClient::connected"  ;
-        EasyToast::information("MqttClient::connected!") ;
-    }) ;
+        qDebug() << "MqttClient::connected";
+        EasyToast::information("MqttClient::connected!");
+        ui->checkBoxSubscirbe->click();
+    });
+    connect(&m_mqtt,&QMqttClient::messageReceived,this,[=](const QByteArray&message){
+        qDebug().noquote() << "MqttClient::messageReceived" << message;
+        EasyToast::information(QString("MqttClient::messageReceived!\n") + message.data());
+    });
+    m_mqtt.connectToHost();
+
+    connect(ui->checkBoxSubscirbe,&QCheckBox::clicked,this,[=](bool checked){
+        if(checked)
+            m_mqtt.subscribe(QMqttTopicFilter(ui->lineEditTopicSubscribe->text().trimmed()),0);
+        else
+            m_mqtt.unsubscribe(QMqttTopicFilter(ui->lineEditTopicSubscribe->text().trimmed()));
+    });
+
+    connect(ui->pushButtonSend,&QPushButton::clicked,this,[=]{
+        QString text = ui->lineEditText->text().trimmed();
+        QString topic = ui->lineEditTopoicPublish->text().trimmed();
+        m_mqtt.publish(QMqttTopicName(topic),text.toUtf8());
+    });
 
     connect(ui->checkBoxTop,&QCheckBox::clicked,this,[=](bool checked){
-        QWindow *pWin = windowHandle() ;
-        Qt::WindowFlags flags = windowFlags() ;
+        QWindow *pWin = windowHandle();
+        Qt::WindowFlags flags = windowFlags();
         if(checked)
             flags |= Qt::WindowStaysOnTopHint;
         else
@@ -74,7 +92,6 @@ MainWindow::MainWindow(QWidget *parent)
         //qDebug() << text ;
         ui->plainTextEdit2->setPlainText(text);
     });
-
     //ui->plainTextEdit1->setPlainText("https://www.163.com");
     connect(ui->pushButtonHttp,&QPushButton::clicked,this,[=]{
         QString text = ui->plainTextEdit1->toPlainText().trimmed();
