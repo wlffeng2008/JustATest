@@ -86,7 +86,7 @@ void EasyToast::active(const QString&text, int type, int durtion)
     ui->label->adjustSize();
     ui->frame->adjustSize();
     this->adjustSize();
-    ui->label->setAlignment(Qt::AlignCenter);
+    // ui->label->setAlignment(Qt::AlignCenter);
     setWindowOpacity(1.0);
     m_opacity = 1.0;
 
