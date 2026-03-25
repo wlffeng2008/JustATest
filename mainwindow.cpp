@@ -8,8 +8,24 @@
 #include <QApplication>
 #include <QStyle>
 
-// #include <QtWaylandClient/qwaylandwindow.h>
-// #include <QtWaylandClient/qwaylandxdgshell.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include <libavformat/avformat.h>
+#include <libavcodec/avcodec.h>
+#include <libavutil/imgutils.h>
+#include <libswscale/swscale.h>
+#include <libavutil/time.h>
+#include <libavutil/opt.h>
+#include <libavdevice/avdevice.h>
+#include <libavutil/timestamp.h>
+#include <libswresample/swresample.h>
+#include <libavformat/avio.h>
+
+#ifdef __cplusplus
+}
+#endif
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -20,6 +36,8 @@ MainWindow::MainWindow(QWidget *parent)
         toast()->active("Hello!",2);// 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
     });
 
+    qDebug("FFmpeg 版本: %s\n", av_version_info());
+
     QString strOS = "Unkown!" ;
 #ifdef Q_OS_WIN
     strOS = "Windows";
@@ -29,7 +47,7 @@ MainWindow::MainWindow(QWidget *parent)
     strOS = "MacOS";
 #endif
 
-    ui->labelOS->setText(strOS);
+    ui->labelOS->setText(strOS + QT_VERSION_STR);
 
     m_mqtt.setUsername("");
     m_mqtt.setPassword("");
